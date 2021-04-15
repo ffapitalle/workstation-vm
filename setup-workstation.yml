@@ -1,0 +1,19 @@
+---
+- name: Configure workstation VM
+  hosts: localhost
+  vars_files:
+    - vars.yml
+  tasks:
+    - name: Configure basic git settings
+      git_config:
+        scope: global
+        name: "{{ item['name'] }}"
+        value: "{{ item['value'] }}"
+      loop: "{{ git }}"
+      when: git is defined
+    - name: Install software
+      become: true
+      dnf:
+        name: "{{ item }}"
+        state: latest
+      loop: "{{ packages }}"
