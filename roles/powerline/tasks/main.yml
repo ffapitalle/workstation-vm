@@ -1,0 +1,17 @@
+---
+# tasks file for powerline
+- name: Install powerline for bash
+  become: true
+  package:
+    name: "{{ packages }}"
+    state: latest
+
+- name: Enable session
+  blockinfile:
+    path: ~{{ ansible_env['USER'] }}/.bashrc
+    marker: "# {mark} ANSIBLE MANAGED POWERLINE ENABLEMENT"
+    block: "{{ lookup('file', 'files/bashrc') }}"
+    owner: "{{ ansible_env['USER'] }}"
+    group: "{{ ansible_env['USER'] }}"
+    mode: 0644
+    state: present
