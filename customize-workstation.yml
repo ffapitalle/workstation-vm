@@ -9,8 +9,12 @@
     - name: Install packages
       become: true
       package:
-        name: pre-commit
+        name: "{{ item }}"
         state: latest
+      with_items:
+        - pre-commit
+        - rpm-build
+        - rpm-sign
     - name: Adds user to sudoers
       become: true
       user:
